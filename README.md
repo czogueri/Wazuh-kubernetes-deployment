@@ -20,8 +20,8 @@ The goal was to demonstrate hands-on Kubernetes skills: cluster bootstrapping, a
 - **Storage**: K3s default `local-path` provisioner (hostPath-based PVs)
 - **Certificates**: Self-signed generated via official Wazuh scripts
 
-![High-level architecture](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/aad5572a6a33a08b7fd846b735497a2df6406050/898f61bc-1cab-4914-80e3-f58294755a34.jpg)  
-*(Replace with a real diagram created in draw.io / excalidraw if desired)*
+![Image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/aad5572a6a33a08b7fd846b735497a2df6406050/898f61bc-1cab-4914-80e3-f58294755a34.jpg)  
+
 
 ## Prerequisites
 
