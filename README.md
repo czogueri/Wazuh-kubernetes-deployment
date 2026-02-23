@@ -60,3 +60,4 @@ node.kubernetes.io/disk-pressure:NoSchedule taint → Caused by low disk space o
 
 Dashboard "not ready yet" → Normal during indexer initialization (OpenSearch health check). Waited for wazuh-indexer-0 → Running and green cluster health.
 
+![image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/b0f32cdcd96b8a4056cb80ae86f00de3531844e0/Screenshot%202026-02-22%20211628.png)
