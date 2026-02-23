@@ -60,4 +60,47 @@ node.kubernetes.io/disk-pressure:NoSchedule taint → Caused by low disk space o
 
 Dashboard "not ready yet" → Normal during indexer initialization (OpenSearch health check). Waited for wazuh-indexer-0 → Running and green cluster health.
 
+
+After logging into the Wazuh dashboard, the following error appeared: "The API connections could be down or inaccessible". The wazuh-manager-master-0 pod was crash-looping with 130+ restarts.
+
+Wazuh deployed on Kubernetes using the official wazuh/wazuh-kubernetes repository. Deployment method: Kustomize (kubectl apply -k envs/local-env/).
+
+-- **Root Cause**
+The wazuh-manager-master StatefulSet had insufficient memory limits (512Mi). The Wazuh vulnerability scanner (wazuh-modulesd:vulnerability-scanner) loads CVE feed databases into memory during updates, causing the container to exceed its memory limit and get OOM (Out of Memory) killed by the kernel.
+Confirmation: The logs showed the vulnerability scanner initiating a feed update right before each crash.
+
+- **Fix**
+
+Locate the base StatefulSet manifest
+The resource limits for wazuh-manager-master are defined in the base manifest, not the local-env overlay: `grep -r "512Mi\|400m\|resources" wazuh/ --include="*.yaml" -l
+#Returns: wazuh/wazuh_managers/wazuh-master-sts.yaml`
+
+  - **Edit the manifest**
+
+In wazuh/wazuh_managers/wazuh-master-sts.yaml, update the resources section:
+`Before
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi`
+
+`After
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi`
+
+- **Apply and Restart**
+`kubectl apply -k envs/local-env/
+kubectl delete pod wazuh-manager-master-0 -n wazuh
+kubectl get pods -n wazuh -w`
+
+
+
 ![image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/b0f32cdcd96b8a4056cb80ae86f00de3531844e0/Screenshot%202026-02-22%20211628.png)
+
+
+![image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/d4d9c2fa987a7f239c288984154eee2dbc4643d9/Screenshot%202026-02-23%20004228.png)
