@@ -104,3 +104,5 @@ kubectl get pods -n wazuh -w`
 
 
 ![image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/d4d9c2fa987a7f239c288984154eee2dbc4643d9/Screenshot%202026-02-23%20004228.png)
+
+![image alt](https://github.com/czogueri/Wazuh-kubernetes-deployment/blob/68828bd8ff16cda771a4a2c531ff10c7b14322a4/Screenshot%202026-02-24%20160928.png)
